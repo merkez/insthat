@@ -25,7 +25,7 @@ This repository contains some list of essential tools and additional programs to
 
 ```bash
 $ curl -fsSL https://raw.githubusercontent.com/merkez/install-tools/main/install-tools.sh -o install-tools.sh
-$ sh ginstall-tools.sh
+$ sh install-tools.sh
 $ sudo bash install-tools.sh
 ```
 
