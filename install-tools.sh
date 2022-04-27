@@ -8,6 +8,7 @@ PROGRAMS=( "goland:INSTALL_GOLAND"
         "vagrant:INSTALL_VAGRANT"
         "go:INSTALL_GO"
         "docker:INSTALL_DOCKER_ENGINE"
+        "virtualbox:INSTALL_VIRTUALBOX"
          )
 
 BLUE="\033[0;34m"
@@ -51,7 +52,12 @@ INSTALL_DOCKER_ENGINE() {
     systemctl start docker
     rm get-docker.sh
 }
-
+INSTALL_VIRTUALBOX() {
+    printf "${YELLOW}Installing VirtualBox...${NC}\n"
+    curl -fsSL https://download.virtualbox.org/virtualbox/6.1.4/virtualbox-6.1_6.1.4-139181~Ubuntu~bionic_amd64.deb -o /tmp/virtualbox.deb
+    dpkg -i /tmp/virtualbox.deb
+    rm /tmp/virtualbox.deb
+}
 
 if [[ $EUID -ne 0 ]]; then  
    	printf "${RED}This script must be run as root\n" 
