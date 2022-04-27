@@ -16,23 +16,23 @@ GREEN="\033[0;32m"
 NC="\033[0m" 
 
 INSTALL_GOLAND() {
-   printf "Installing Go 1.18"
+   printf "${BLUE}Installing Go 1.18"
    curl -fsSL https://golang.org/dl/go1.18.linux-amd64.tar.gz -o /tmp/go.tar.gz
    tar -C /usr/local -xzf /tmp/go.tar.gz
    rm /tmp/go.tar.gz
-   printf "DO NOT FORGET TO ADD go to path..."
-   printf "hint: export PATH=$PATH:/usr/local/go/bin  >> /home/$USER/.bashrc" 
+   printf "${RED}DO NOT FORGET TO ADD go to path...\n"
+   printf "${RED}hint: export PATH=$PATH:/usr/local/go/bin  >> /home/$USER/.bashrc${NC}" 
 }
 
 INSTALL_GO() {
-    printf "Installing Goland..."
+    printf "${BLUE}Installing Goland...${NC}\n"
     curl -fsSL https://download.jetbrains.com/go/goland-2022.1.tar.gz -o /tmp/goland.tar.gz
     tar -C /opt -xzf /tmp/goland.tar.gz
     rm /tmp/goland.tar.gz
 }
 
 INSTALL_VAGRANT() {
-    printf "Installing Vagrant..."
+    printf "${BLUE}Installing Vagrant...${NC}\n"
     curl -fsSL https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub -o /home/$USER/.ssh/authorized_keys
     curl -fsSL https://releases.hashicorp.com/vagrant/2.2.5/vagrant_2.2.5_x86_64.deb -o /tmp/vagrant.deb
     dpkg -i /tmp/vagrant.deb
@@ -40,14 +40,14 @@ INSTALL_VAGRANT() {
 }
 
 INSTALL_DOCKER_ENGINE() {
-    printf "Installing Docker..."
+    printf "${BLUE}Installing Docker...${NC}\n"
     curl -fsSL https://get.docker.com -o get-docker.sh
     sh get-docker.sh
     printf "${BLUE}Adding $USER to docker group...\n"
     usermod -aG docker $USER
     printf "${BLUE} Enabling docker service...\n"
     systemctl enable docker
-    printf "${BLUE} Starting docker service...\n"
+    printf "${BLUE} Starting docker service...${NC}\n"
     systemctl start docker
     rm get-docker.sh
 }
