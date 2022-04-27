@@ -2,7 +2,7 @@
 
 ## This script can be extended in time to include more tools to install if required
 
-PROGRAMS=(git vim zsh curl wget tree htop virtualbox build-essential) 
+PROGRAMS=(git vim zsh curl wget tree htop virtualbox build-essential cmake) 
 IS_EXISTS() {
     if command -v $1 >/dev/null 
     then
@@ -18,6 +18,8 @@ if [[ $EUID -ne 0 ]]; then
    	exit 1
 else
    echo "This script will install the following packages:"
+    echo "* build-essential"
+    echo "* cmake"
     echo "* git"
     echo "* vim"
     echo "* zsh"

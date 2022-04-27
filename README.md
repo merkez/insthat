@@ -5,6 +5,7 @@ This repository contains some list of essential tools and additional programs to
 ## included tools
 
 - [x] build-essential
+- [x] cmake
 - [x] vim
 - [x] curl
 - [x] wget
