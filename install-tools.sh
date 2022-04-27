@@ -2,133 +2,103 @@
 
 ## This script can be extended in time to include more tools to install if required
 
-PROGRAMS=(git vim zsh curl wget tree htop virtualbox build-essential cmake) 
-IS_EXISTS() {
-    if command -v $1 >/dev/null 
-    then
-        echo "$1 already exists"
-    else
-        echo "Installing $1..."
-        apt install -y $1
-    fi 
-}   
+ESSENTIALS=(git vim zsh curl wget tree htop build-essential cmake) 
+
+PROGRAMS=( "goland:INSTALL_GOLAND"
+        "vagrant:INSTALL_VAGRANT"
+        "go:INSTALL_GO"
+        "docker:INSTALL_DOCKER_ENGINE"
+         )
+
+BLUE="\033[0;34m"
+RED="\033[0;31m"
+GREEN="\033[0;32m"
+NC="\033[0m" 
+
+INSTALL_GOLAND() {
+   printf "Installing Go 1.18"
+   curl -fsSL https://golang.org/dl/go1.18.linux-amd64.tar.gz -o /tmp/go.tar.gz
+   tar -C /usr/local -xzf /tmp/go.tar.gz
+   rm /tmp/go.tar.gz
+   printf "DO NOT FORGET TO ADD go to path..."
+   printf "hint: export PATH=$PATH:/usr/local/go/bin  >> /home/$USER/.bashrc" 
+}
+
+INSTALL_GO() {
+    printf "Installing Goland..."
+    curl -fsSL https://download.jetbrains.com/go/goland-2022.1.tar.gz -o /tmp/goland.tar.gz
+    tar -C /opt -xzf /tmp/goland.tar.gz
+    rm /tmp/goland.tar.gz
+}
+
+INSTALL_VAGRANT() {
+    printf "Installing Vagrant..."
+    curl -fsSL https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub -o /home/$USER/.ssh/authorized_keys
+    curl -fsSL https://releases.hashicorp.com/vagrant/2.2.5/vagrant_2.2.5_x86_64.deb -o /tmp/vagrant.deb
+    dpkg -i /tmp/vagrant.deb
+    rm /tmp/vagrant.deb
+}
+
+INSTALL_DOCKER_ENGINE() {
+    printf "Installing Docker..."
+    curl -fsSL https://get.docker.com -o get-docker.sh
+    sh get-docker.sh
+    printf "${BLUE}Adding $USER to docker group...\n"
+    usermod -aG docker $USER
+    printf "${BLUE} Enabling docker service...\n"
+    systemctl enable docker
+    printf "${BLUE} Starting docker service...\n"
+    systemctl start docker
+    rm get-docker.sh
+}
+
 
 if [[ $EUID -ne 0 ]]; then  
-   	echo "This script must be run as root" 
+   	printf "${RED}This script must be run as root\n" 
    	exit 1
 else
-   echo "This script will install the following packages:"
-    echo "* build-essential"
-    echo "* cmake"
-    echo "* git"
-    echo "* vim"
-    echo "* zsh"
-    echo "* curl"
-    echo "* wget"
-    echo "* htop"
-    echo "* tree"
-    echo "* virtualbox"
-
-    echo "Updating apt-get..."
+    printf "${GREEN}********************************************************${NC}\n"
+    printf "${GREEN}*  INSTALLING ESSENTIAL PACKAGES & OPTIONAL PROGRAMS   *${NC}\n"
+    printf "${GREEN}********************************************************${NC}\n"
+    printf "${BLUE}Updating apt-get...${NC}\n"
     apt update 
-    # not included in $PROGRAMS since there is no build-essential command to check 
-    echo "Installing build-essential..."
-    apt install -y build-essential 
-
-    for i in "${!PROGRAMS[@]}"; do
-       IS_EXISTS ${PROGRAMS[$i]}
-    done 
-
-    echo "Would you like to install docker engine ? (y/n)"
-    read response
+    printf "${GREEN}--------------------------------------------------------${NC}\n"
+    printf "${BLUE}This script will install the following packages: ${NC}\n"
+    printf "[ ${BLUE}${ESSENTIALS[*]}${NC} ]\n\n"
+    printf "${BLUE}Would like to continue ? [y/n] ${NC}\n"
+    read -r response
     if [  "$response" != "${response#[Yy]}" ]; then
-        if command -v docker >/dev/null 
-        then
-            echo "Docker already exists"
-        else
-            echo "Installing Docker..."
-            curl -fsSL https://get.docker.com -o get-docker.sh
-            sh get-docker.sh
-            echo "Adding $USER to docker group..."
-            usermod -aG docker $USER
-            echo "Enabling docker service..."
-            systemctl enable docker
-            echo "Starting docker service..."
-            systemctl start docker
-            rm get-docker.sh
-        fi
-    else
-        echo "Exiting without installing docker engine"
-        exit 1
+        for i in "${ESSENTIALS[@]}" ; do
+            printf "\n${BLUE}Installing  $i ${NC}\n"
+            printf "${BLUE}********************************************************${NC}\n"
+            apt install -y $i
+        done
+    else 
+        printf "${RED}Exiting without installing essentials \n"
+        printf "${RED}--------------------------------------------------------${NC}\n"
+        printf "${RED}Next installation steps may NOT run, since install essentials did not work${NC}\n"
     fi
 
-    echo "Would you like to install vagrant ? (y/n)"
-    if [  "$response" != "${response#[Yy]}" ]; then
-        if command -v vagrant >/dev/null 
-        then
-            echo "Vagrant already exists"
+  
+    for tool in "${PROGRAMS[@]}" ; do
+        KEY=${tool%%:*}
+        VALUE=${tool#*:}
+        printf "${BLUE}Would you like to install $KEY ? (y/n)${NC}\n"
+        read -r response
+        if [  "$response" != "${response#[Yy]}" ]; then
+            $VALUE
         else
-            echo "Installing Vagrant..."
-            curl -fsSL https://raw.githubusercontent.com/hashicorp/vagrant/master/keys/vagrant.pub -o /home/$USER/.ssh/authorized_keys
-            curl -fsSL https://releases.hashicorp.com/vagrant/2.2.5/vagrant_2.2.5_x86_64.deb -o /tmp/vagrant.deb
-            dpkg -i /tmp/vagrant.deb
-            rm /tmp/vagrant.deb
+            printf "${RED}Exiting without installing $KEY ${NC}\n"
         fi
-    else
-        echo "Exiting without installing vagrant"
-        exit 1
-    fi
+    done
+   
+   printf "${BLUE}--------------------------------------------------------${NC}\n\n"
 
-    echo "Would you like to install vs code ? (y/n)"
-    if [  "$response" != "${response#[Yy]}" ]; then
-        if command -v code >/dev/null 
-        then
-            echo "VSCode already exists"
-        else
-            echo "Installing VSCode..."
-            curl -L https://go.microsoft.com/fwlink/?LinkID=760868 -o /tmp/vscode.deb
-            dpkg -i /tmp/vscode.deb
-            rm /tmp/vscode.deb
-        fi
-    else
-        echo "Exiting without installing vs code"
-        exit 1
-    fi
-
-    echo "Would you like to install go ? (y/n)"
-    if [  "$response" != "${response#[Yy]}" ]; then
-        if command -v go >/dev/null 
-        then
-            echo "Go already exists"
-        else
-            echo "Installing Go 1.18"
-            curl -fsSL https://golang.org/dl/go1.18.linux-amd64.tar.gz -o /tmp/go.tar.gz
-            tar -C /usr/local -xzf /tmp/go.tar.gz
-            rm /tmp/go.tar.gz
-            echo "Adding go to path..."
-            echo "export PATH=$PATH:/usr/local/go/bin" >> /home/$USER/.bashrc
-        fi
-    else
-        echo "Exiting without installing go"
-        exit 1
-    fi    
-
-    echo "Would you like to install goland ? (y/n)"
-    if [  "$response" != "${response#[Yy]}" ]; then
-        if command -v goland >/dev/null 
-        then
-            echo "Goland already exists"
-        else
-            echo "Installing Goland..."
-            curl -fsSL https://download.jetbrains.com/go/goland-2022.1.tar.gz -o /tmp/goland.tar.gz
-            tar -C /opt -xzf /tmp/goland.tar.gz
-            rm /tmp/goland.tar.gz
-            echo "Adding goland to path..."
-            echo "export PATH=$PATH:/opt/goland-2022.1/bin" >> /home/$USER/.bashrc
-        fi
-    else
-        echo "Exiting without installing goland"
-        exit 1
-    fi
+   printf "${GREEN}Thanks for using the script ! ${NC}\n"
+   printf "${GREEN}********************************************************${NC}\n"
+   printf "${GREEN}If you like it, a star would be nice on github: https://github.com/merkez/install-tools\n"
+   printf "If you have any request/fix, please create an issue at https://github.com/merkez/install-tools/issues/new\n"
+   printf "${GREEN}********************************************************${NC}\n"
+   printf "\n"
 
 fi
