@@ -2,7 +2,7 @@
 
 ## This script can be extended in time to include more tools to install if required
 
-PROGRAMS=(git vim zsh curl wget tree htop virtualbox) 
+PROGRAMS=(git vim zsh curl wget tree htop virtualbox build-essential) 
 IS_EXISTS() {
     if command -v $1 >/dev/null 
     then
@@ -26,6 +26,12 @@ else
     echo "* htop"
     echo "* tree"
     echo "* virtualbox"
+
+    echo "Updating apt-get..."
+    apt update 
+    # not included in $PROGRAMS since there is no build-essential command to check 
+    echo "Installing build-essential..."
+    apt install -y build-essential 
 
     for i in "${!PROGRAMS[@]}"; do
        IS_EXISTS ${PROGRAMS[$i]}
