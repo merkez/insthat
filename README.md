@@ -4,8 +4,6 @@ This repository contains some list of essential tools and additional programs to
 
 ## what is included 
 
----
-
 | **_Linux#Tools_** | **_IDEs/Code Editors_** | **_Other Applications_** | **_Programming Langs_** |
 |:-----------------:|:-----------------------:|:------------------------:|:-----------------------:|
 |  build-essential  |          goland         |          docker          |            go           |
