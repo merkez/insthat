@@ -2,30 +2,21 @@
 
 This repository contains some list of essential tools and additional programs to be installed on Debian based computer.
 
-## included tools
+## what is included 
 
-- [x] build-essential
-- [x] cmake
-- [x] vim
-- [x] curl
-- [x] wget
-- [x] zsh
-- [x] tree
-- [x] git
-- [x] htop
+---
 
-## additional softwares 
+| **_Linux#Tools_** | **_IDEs/Code Editors_** | **_Other Applications_** | **_Programming Langs_** |
+|:-----------------:|:-----------------------:|:------------------------:|:-----------------------:|
+|  build-essential  |          goland         |          docker          |            go           |
+|       cmake       |         pycharm         |        virtualbox        |                         |
+|        vim        |         intellij        |          vagrant         |                         |
+|        curl       |         rubymine        |                          |                         |
+|        wget       |         sublime         |                          |                         |
+|        zsh        |         vs-code         |                          |                         |
+|        tree       |                         |                          |                         |
+|        htop       |                         |                          |                         |
 
-- [x] vs-code
-- [x] vagrant
-- [x] go
-- [x] goland 
-- [x] intellij
-- [x] pycharm
-- [x] rubymine
-- [x] sublime
-- [x] virtualbox
-- [x] docker
 
 ## how to run 
 
