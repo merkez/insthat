@@ -17,6 +17,9 @@ declare -A PROGRAMS=(
     [virtualbox]="INSTALL_VIRTUALBOX"
 )
 
+JETBRAINS_VERSION="2022.1"
+VAGRANT_VERSION="2.2.19"
+GO_VERSION="1.18"
 
 BLUE="\033[0;34m"
 RED="\033[0;31m"
@@ -25,8 +28,8 @@ YELLOW="\033[1;33m"
 NC="\033[0m" 
 
 INSTALL_GO() {
-   printf "${YELLOW}Installing Go 1.18\n"
-   curl -fsSL https://golang.org/dl/go1.18.linux-amd64.tar.gz -o /tmp/go.tar.gz
+   printf "${YELLOW}Installing Go ${GO_VERSION}\n"
+   curl -fsSL https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz -o /tmp/go.tar.gz
    tar -C /usr/local -xzf /tmp/go.tar.gz
    rm /tmp/go.tar.gz
    printf "${RED}DO NOT FORGET TO ADD go to path...\n"
@@ -35,18 +38,18 @@ INSTALL_GO() {
 
 INSTALL_PYCHARM() {
     printf "${YELLOW}Installing PyCharm\n"
-    wget https://download.jetbrains.com/python/pycharm-community-2022.1.tar.gz
-    tar -xzf pycharm-community-2022.1.tar.gz
-    rm pycharm-community-2022.1.tar.gz
-    mv pycharm-community-2022.1 /opt/pycharm
+    wget https://download.jetbrains.com/python/pycharm-community-${JETBRAINS_VERSION}.tar.gz
+    tar -xzf pycharm-community-${JETBRAINS_VERSION}.tar.gz
+    rm pycharm-community-${JETBRAINS_VERSION}.tar.gz
+    mv pycharm-community-${JETBRAINS_VERSION} /opt/pycharm
 }
 
 INSTALL_RUBYMINE() {
     printf "${YELLOW}Installing RubyMine\n"
-    wget https://download.jetbrains.com/ruby/RubyMine-2022.1.tar.gz
-    tar -xzf RubyMine-2022.1.tar.gz
-    rm RubyMine-2022.1.tar.gz
-    mv RubyMine-2022.1 /opt/rubymine
+    wget https://download.jetbrains.com/ruby/RubyMine-${JETBRAINS_VERSION}.tar.gz
+    tar -xzf RubyMine-${JETBRAINS_VERSION}.tar.gz
+    rm RubyMine-${JETBRAINS_VERSION}.tar.gz
+    mv RubyMine-${JETBRAINS_VERSION} /opt/rubymine
 }
 
 INSTALL_SUBLIME() {
@@ -59,23 +62,23 @@ INSTALL_SUBLIME() {
 
 INSTALL_INTELLIJ() {
     printf "${YELLOW}Installing IntelliJ\n"
-    wget https://download.jetbrains.com/idea/ideaIU-2022.1.tar.gz
-    tar -xzf ideaIU-2022.1.tar.gz
-    rm ideaIU-2022.1.tar.gz
-    mv idea-IU-2022.1 /opt/intellij
+    wget https://download.jetbrains.com/idea/ideaIU-${JETBRAINS_VERSION}.tar.gz
+    tar -xzf ideaIU-${JETBRAINS_VERSION}.tar.gz
+    rm ideaIU-${JETBRAINS_VERSION}.tar.gz
+    mv idea-IU-${JETBRAINS_VERSION} /opt/intellij
 }
 
 
 INSTALL_GOLAND() {
     printf "${YELLOW}Installing Goland...${NC}\n"
-    curl -fsSL https://download.jetbrains.com/go/goland-2022.1.tar.gz -o /tmp/goland.tar.gz
+    curl -fsSL https://download.jetbrains.com/go/goland-${JETBRAINS_VERSION}.tar.gz -o /tmp/goland.tar.gz
     tar -C /opt -xzf /tmp/goland.tar.gz
     rm /tmp/goland.tar.gz
 }
 
 INSTALL_VAGRANT() {
     printf "${YELLOW}Installing Vagrant...${NC}\n"
-    curl -fsSL https://releases.hashicorp.com/vagrant/2.2.19/vagrant_2.2.19_x86_64.deb -o /tmp/vagrant.deb
+    curl -fsSL https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -o /tmp/vagrant.deb
     dpkg -i /tmp/vagrant.deb
     rm /tmp/vagrant.deb
 }
