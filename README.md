@@ -28,7 +28,8 @@ $ curl -fsSL https://raw.githubusercontent.com/merkez/install-tools/main/install
 $ sudo bash install-tools.sh
 ```
 
-![installation-demo](https://user-images.githubusercontent.com/13614433/165646225-e6846ff0-969c-4915-8281-6a48ffa5c8c8.mp4)
+
+https://user-images.githubusercontent.com/13614433/165651015-995e4991-080b-49eb-83b4-546cfba6e996.mp4
 
 
 
