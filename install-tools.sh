@@ -17,7 +17,7 @@ GREEN="\033[0;32m"
 YELLOW="\033[1;33m"
 NC="\033[0m" 
 
-INSTALL_GOLAND() {
+INSTALL_GO() {
    printf "${YELLOW}Installing Go 1.18\n"
    curl -fsSL https://golang.org/dl/go1.18.linux-amd64.tar.gz -o /tmp/go.tar.gz
    tar -C /usr/local -xzf /tmp/go.tar.gz
@@ -26,7 +26,7 @@ INSTALL_GOLAND() {
    printf "${RED}hint: export PATH=$PATH:/usr/local/go/bin  >> /home/$USER/.bashrc${NC}\n" 
 }
 
-INSTALL_GO() {
+INSTALL_GOLAND() {
     printf "${YELLOW}Installing Goland...${NC}\n"
     curl -fsSL https://download.jetbrains.com/go/goland-2022.1.tar.gz -o /tmp/goland.tar.gz
     tar -C /opt -xzf /tmp/goland.tar.gz
