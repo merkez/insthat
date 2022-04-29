@@ -20,6 +20,12 @@ This repository contains some list of essential tools and additional programs to
 - [x] vagrant
 - [x] go
 - [x] goland 
+- [x] intellij
+- [x] pycharm
+- [x] rubymine
+- [x] sublime
+- [x] virtualbox
+- [x] docker
 
 ## how to run 
 
