@@ -7,13 +7,14 @@ This repository contains some list of essential tools and additional programs to
 | **_Linux#Tools_** | **_IDEs/Code Editors_** | **_Other Applications_** | **_Programming Langs_** |
 |:-----------------:|:-----------------------:|:------------------------:|:-----------------------:|
 |  build-essential  |          goland         |          docker          |            go           |
-|       cmake       |         pycharm         |        virtualbox        |                         |
-|        vim        |         intellij        |          vagrant         |                         |
-|        curl       |         rubymine        |                          |                         |
-|        wget       |         sublime         |                          |                         |
-|        zsh        |         vs-code         |                          |                         |
-|        tree       |                         |                          |                         |
-|        htop       |                         |                          |                         |
+|       cmake       |         pycharm         |        virtualbox        |          nodejs         |
+|        vim        |         intellij        |          vagrant         |           rust          |
+|        curl       |         rubymine        |           yarn           |                         |
+|        wget       |         sublime         |            npm           |                         |
+|        zsh        |         vs-code         |           venv           |                         |
+|        tree       |         anaconda        |           ninja          |                         |
+|        htop       |                         |       adaptopenjdk       |                         |
+|       ffmpeg      |                         |                          |                         |
 
 
 ## how to run 
