@@ -2,6 +2,9 @@
 
 This repository contains some list of essential tools and additional programs to be installed on Debian based computer.
 
+> **ALTHOUGH IT IS TESTED ON UBUNTU 20, USE IT AT YOUR RISK, CHECK THE SCRIPT BEFORE USING TO UPDATE VERSIONS AND OTHER STUFF THAT YOU MAY WANT TO UPDATE**
+
+
 ## what is included 
 
 | **_Linux#Tools_** | **_IDEs/Code Editors_** | **_Other Applications_** | **_Programming Langs_** |
@@ -31,5 +34,6 @@ https://user-images.githubusercontent.com/13614433/165651015-995e4991-080b-49eb-
 
 ## contribution
 
-Happy to include your contributions and possible tools/programs into script, just create an issue or pull request :) 
+Happy to include your contributions and possible tools/programs into script, just create an issue or pull request :)
+
 
