@@ -28,7 +28,7 @@ $ sudo bash install-tools.sh
 ```
 
 
-https://user-images.githubusercontent.com/13614433/165651015-995e4991-080b-49eb-83b4-546cfba6e996.mp4
+[![asciicast](https://asciinema.org/a/491489.svg)](https://asciinema.org/a/491489)
 
 
 
