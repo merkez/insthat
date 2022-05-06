@@ -28,6 +28,7 @@ declare -A PROGRAMS=(
     [anaconda]="INSTALL_ANACONDA"
     [adoptopenjdk]="INSTALL_ADOPTOPENJDK"
     [ffmpeg]="INSTALL_FFMPEG"
+    [telegram]="INSTALL_TELEGRAM"
 )
 
 JETBRAINS_VERSION="2022.1"
@@ -188,6 +189,12 @@ INSTALL_FFMPEG() {
     printf "${YELLOW}Installing FFMPEG...${NC}\n"
     apt-get install -y ffmpeg
 }
+
+INSTALL_TELEGRAM() {
+    printf "${YELLOW}Installing Telegram...${NC}\n"
+    apt-get install -y telegram-desktop
+}
+
 
 if [[ $EUID -ne 0 ]]; then  
    	printf "${RED}This script must be run as root\n" 

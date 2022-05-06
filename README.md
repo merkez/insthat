@@ -17,7 +17,7 @@ This repository contains some list of essential tools and additional programs to
 |        zsh        |         vs-code         |           venv           |                         |
 |        tree       |         anaconda        |           ninja          |                         |
 |        htop       |                         |       adaptopenjdk       |                         |
-|       ffmpeg      |                         |                          |                         |
+|       ffmpeg      |                         |         telegram         |                         |
 
 
 ## how to run 
