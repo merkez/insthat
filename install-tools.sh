@@ -7,7 +7,7 @@ PROGRAMS_ARR=(goland pycharm intellij rubymine sublime
  vagrant go docker
  virtualbox nodejs yarn ninja 
  rust boostlib venv anaconda 
- adoptopenjdk ffmpeg telegram-desktop)) 
+ adoptopenjdk ffmpeg telegram-desktop)
 
 declare -A PROGRAMS=(
     [goland]="INSTALL_GOLAND"
