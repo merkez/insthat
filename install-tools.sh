@@ -206,7 +206,7 @@ INSTALL_ESSENTIALS() {
 
 ## INSTALL_PROGRAMS FOR TEST PURPOSES
 INSTALL_PROGRAMS() {
-    for i in "${PROGRAMS[@]}" ; do
+    for i in "${PROGRAMS_ARR[@]}" ; do
         printf "\n${BLUE}Installing  $i ${NC}\n"
         printf "${BLUE}********************************************************${NC}\n"
         ${PROGRAMS[$i]}
