@@ -213,63 +213,62 @@ INSTALL_PROGRAMS() {
     done
 }
 
-
-
-if [[ $EUID -ne 0 ]]; then  
-   	printf "${RED}This script must be run as root\n" 
-else
-    printf "${GREEN}********************************************************${NC}\n"
-    printf "${GREEN}*  INSTALLING ESSENTIAL PACKAGES & OPTIONAL PROGRAMS   *${NC}\n"
-    printf "${GREEN}********************************************************${NC}\n"
-    printf "${BLUE}Updating apt-get...${NC}\n"
-    apt update 
-    printf "${GREEN}--------------------------------------------------------${NC}\n"
-    printf "${BLUE}This script will install the following packages: ${NC}\n\n"
-    printf "[ ${BLUE}${ESSENTIALS[*]}${NC} ]\n\n"
-    printf "${BLUE}Would like to continue ? [y/n] ${NC}\n"
-    read -r response
-    if [  "$response" != "${response#[Yy]}" ]; then
-        INSTALL_ESSENTIALS
-    else 
-        printf "${RED}Exiting without installing essentials \n"
-        printf "${RED}--------------------------------------------------------${NC}\n"
-        printf "${RED}Next installation steps may NOT run, since install essentials did not work${NC}\n\n"
-    fi
-
-    while true; do
-        printf "${BLUE}Type what you would like to install ${NC}\n\n"
-        printf "[ ${BLUE}${PROGRAMS_ARR[*]}${NC} ]\n\n"
+  #  this is for test purposes on CI
+if [[ $1 == "-t" || $1 == "--testall" ]]; then
+    printf "${YELLOW}TEST MODE: TESTING INSTALLATION FUNCTIONS${NC}\n"
+    INSTALL_ESSENTIALS
+    INSTALL_PROGRAMS
+    exit 0
+else               
+    if [[ $EUID -ne 0 ]]; then  
+        printf "${RED}This script must be run as root\n" 
+    else
+        printf "${GREEN}********************************************************${NC}\n"
+        printf "${GREEN}*  INSTALLING ESSENTIAL PACKAGES & OPTIONAL PROGRAMS   *${NC}\n"
+        printf "${GREEN}********************************************************${NC}\n"
+        printf "${BLUE}Updating apt-get...${NC}\n"
+        apt update 
+        printf "${GREEN}--------------------------------------------------------${NC}\n"
+        printf "${BLUE}This script will install the following packages: ${NC}\n\n"
+        printf "[ ${BLUE}${ESSENTIALS[*]}${NC} ]\n\n"
+        printf "${BLUE}Would like to continue ? [y/n] ${NC}\n"
         read -r response
-        if [  "${PROGRAMS[$response]}" != "" ]; then
-            ${PROGRAMS[$response]}
-            printf "${YELLOW}Installation of $response completed\n"
-            PROGRAMS_ARR=("${PROGRAMS_ARR[@]/$response}")
+        if [  "$response" != "${response#[Yy]}" ]; then
+            INSTALL_ESSENTIALS
         else 
-            printf "${RED}Exiting without installing program${NC} [ $response ] \n"
+            printf "${RED}Exiting without installing essentials \n"
             printf "${RED}--------------------------------------------------------${NC}\n"
-            printf "${RED}Only available programs can be installed  ${NC}\n\n"
-            printf "${YELLOW}--------------------------------------------------------${NC}\n\n"
-            printf "${YELLOW}Available programs: ${NC}\n\n"
-            printf "[ ${YELLOW}${PROGRAMS_ARR[*]}${NC} ]\n\n"
-            printf "${YELLOW}If you would like to include a program, please create an issue or PR on: ${NC}\n\n"
-            printf "${YELLOW}https://github.com/merkez/install-tools/issues/new\n${NC}\n"
-            break
+            printf "${RED}Next installation steps may NOT run, since install essentials did not work${NC}\n\n"
         fi
-    #  this is for test purposes on CI
-    if [[ $1 == "-t" || $1 == "--testall" ]]; then
-        printf "${YELLOW}Usage:${NC}\n"
-        INSTALL_ESSENTIALS
-        INSTALL_PROGRAMS
-        exit 0
-    fi             
-    done
 
-   printf "${YELLOW}--------------------------------------------------------${NC}\n\n"
-   printf "${GREEN}Thanks for using the script ! ${NC}\n"
-   printf "${GREEN}********************************************************${NC}\n"
-   printf "${GREEN}If you like it, a star would be nice on github: https://github.com/merkez/install-tools\n"
-   printf "If you have any request/fix, please create an issue at https://github.com/merkez/install-tools/issues/new\n"
-   printf "${GREEN}********************************************************${NC}\n"
-   printf "\n"
+        while true; do
+            printf "${BLUE}Type what you would like to install ${NC}\n\n"
+            printf "[ ${BLUE}${PROGRAMS_ARR[*]}${NC} ]\n\n"
+            read -r response
+            if [  "${PROGRAMS[$response]}" != "" ]; then
+                ${PROGRAMS[$response]}
+                printf "${YELLOW}Installation of $response completed\n"
+                PROGRAMS_ARR=("${PROGRAMS_ARR[@]/$response}")
+            else 
+                printf "${RED}Exiting without installing program${NC} [ $response ] \n"
+                printf "${RED}--------------------------------------------------------${NC}\n"
+                printf "${RED}Only available programs can be installed  ${NC}\n\n"
+                printf "${YELLOW}--------------------------------------------------------${NC}\n\n"
+                printf "${YELLOW}Available programs: ${NC}\n\n"
+                printf "[ ${YELLOW}${PROGRAMS_ARR[*]}${NC} ]\n\n"
+                printf "${YELLOW}If you would like to include a program, please create an issue or PR on: ${NC}\n\n"
+                printf "${YELLOW}https://github.com/merkez/install-tools/issues/new\n${NC}\n"
+                break
+            fi
+        done
 
+    printf "${YELLOW}--------------------------------------------------------${NC}\n\n"
+    printf "${GREEN}Thanks for using the script ! ${NC}\n"
+    printf "${GREEN}********************************************************${NC}\n"
+    printf "${GREEN}If you like it, a star would be nice on github: https://github.com/merkez/install-tools\n"
+    printf "If you have any request/fix, please create an issue at https://github.com/merkez/install-tools/issues/new\n"
+    printf "${GREEN}********************************************************${NC}\n"
+    printf "\n"
+
+    fi
 fi
