@@ -167,7 +167,7 @@ INSTALL_VENV() {
 INSTALL_ANACONDA() {
     printf "${YELLOW}Installing Anaconda...${NC}\n"
     wget https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
-    bash Anaconda3-2021.11-Linux-x86_64.sh
+    bash Anaconda3-2021.11-Linux-x86_64.sh -b
     rm Anaconda3-2021.11-Linux-x86_64.sh
 }
 
