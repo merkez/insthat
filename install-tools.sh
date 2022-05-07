@@ -2,7 +2,7 @@
 
 ## This script can be extended in time to include more tools to install if required
 
-ESSENTIALS=(git vim zsh curl wget tree htop build-essential cmake) 
+ESSENTIALS=(git vim zsh curl  --no-progress-meter wget -q tree htop build-essential cmake) 
 PROGRAMS_ARR=(goland pycharm intellij rubymine sublime 
  vagrant go docker
  virtualbox nodejs yarn ninja 
@@ -17,7 +17,7 @@ declare -A PROGRAMS=(
     [sublime]="INSTALL_SUBLIME"
     [vagrant]="INSTALL_VAGRANT"
     [go]="INSTALL_GO"
-    [docker]="INSTALL_DOCKER"
+    [docker]="INSTALL_DOCKER_ENGINE"
     [virtualbox]="INSTALL_VIRTUALBOX"
     [nodejs]="INSTALL_NODEJS"
     [yarn]="INSTALL_YARN"
@@ -43,7 +43,7 @@ NC="\033[0m"
 
 INSTALL_GO() {
    printf "${YELLOW}Installing Go ${GO_VERSION}\n"
-   curl -fsSL https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz -o /tmp/go.tar.gz
+   curl  --no-progress-meter -fsSL https://golang.org/dl/go${GO_VERSION}.linux-amd64.tar.gz -o /tmp/go.tar.gz
    tar -C /usr/local -xzf /tmp/go.tar.gz
    rm /tmp/go.tar.gz
    printf "${RED}DO NOT FORGET TO ADD go to path...\n"
@@ -52,7 +52,7 @@ INSTALL_GO() {
 
 INSTALL_PYCHARM() {
     printf "${YELLOW}Installing PyCharm\n"
-    wget https://download.jetbrains.com/python/pycharm-community-${JETBRAINS_VERSION}.tar.gz
+    wget -q https://download.jetbrains.com/python/pycharm-community-${JETBRAINS_VERSION}.tar.gz
     tar -xzf pycharm-community-${JETBRAINS_VERSION}.tar.gz
     rm pycharm-community-${JETBRAINS_VERSION}.tar.gz
     mv pycharm-community-${JETBRAINS_VERSION} /opt/pycharm
@@ -60,7 +60,7 @@ INSTALL_PYCHARM() {
 
 INSTALL_RUBYMINE() {
     printf "${YELLOW}Installing RubyMine\n"
-    wget https://download.jetbrains.com/ruby/RubyMine-${JETBRAINS_VERSION}.tar.gz
+    wget -q https://download.jetbrains.com/ruby/RubyMine-${JETBRAINS_VERSION}.tar.gz
     tar -xzf RubyMine-${JETBRAINS_VERSION}.tar.gz
     rm RubyMine-${JETBRAINS_VERSION}.tar.gz
     mv RubyMine-${JETBRAINS_VERSION} /opt/rubymine
@@ -68,7 +68,7 @@ INSTALL_RUBYMINE() {
 
 INSTALL_SUBLIME() {
     printf "${YELLOW}Installing Sublime Text\n"
-    wget https://download.sublimetext.com/sublime-text_build-3126_amd64.deb
+    wget -q https://download.sublimetext.com/sublime-text_build-3126_amd64.deb
     sudo dpkg -i sublime-text_build-3126_amd64.deb
     rm sublime-text_build-3126_amd64.deb
 }
@@ -76,7 +76,7 @@ INSTALL_SUBLIME() {
 
 INSTALL_INTELLIJ() {
     printf "${YELLOW}Installing IntelliJ\n"
-    wget https://download.jetbrains.com/idea/ideaIU-${JETBRAINS_VERSION}.tar.gz
+    wget -q https://download.jetbrains.com/idea/ideaIU-${JETBRAINS_VERSION}.tar.gz
     tar -xzf ideaIU-${JETBRAINS_VERSION}.tar.gz
     rm ideaIU-${JETBRAINS_VERSION}.tar.gz
     mv idea-IU-${JETBRAINS_VERSION} /opt/intellij
@@ -85,21 +85,21 @@ INSTALL_INTELLIJ() {
 
 INSTALL_GOLAND() {
     printf "${YELLOW}Installing Goland...${NC}\n"
-    curl -fsSL https://download.jetbrains.com/go/goland-${JETBRAINS_VERSION}.tar.gz -o /tmp/goland.tar.gz
+    curl  --no-progress-meter -fsSL https://download.jetbrains.com/go/goland-${JETBRAINS_VERSION}.tar.gz -o /tmp/goland.tar.gz
     tar -C /opt -xzf /tmp/goland.tar.gz
     rm /tmp/goland.tar.gz
 }
 
 INSTALL_VAGRANT() {
     printf "${YELLOW}Installing Vagrant...${NC}\n"
-    curl -fsSL https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -o /tmp/vagrant.deb
+    curl  --no-progress-meter -fsSL https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -o /tmp/vagrant.deb
     dpkg -i /tmp/vagrant.deb
     rm /tmp/vagrant.deb
 }
 
 INSTALL_DOCKER_ENGINE() {
     printf "${YELLOW}Installing Docker...${NC}\n"
-    curl -fsSL https://get.docker.com -o get-docker.sh
+    curl  --no-progress-meter  -fsSL https://get.docker.com -o get-docker.sh
     sh get-docker.sh
     printf "${YELLOW}Adding $USER to docker group...\n"
     usermod -aG docker $USER
@@ -112,32 +112,32 @@ INSTALL_DOCKER_ENGINE() {
 
 INSTALL_VIRTUALBOX() {
     printf "${YELLOW}Installing VirtualBox...${NC}\n"
-    curl -fsSL https://download.virtualbox.org/virtualbox/6.1.4/virtualbox-6.1_6.1.4-139181~Ubuntu~bionic_amd64.deb -o /tmp/virtualbox.deb
+    curl  --no-progress-meter  -fsSL https://download.virtualbox.org/virtualbox/6.1.34/virtualbox-6.1_6.1.34-150636.1~Ubuntu~bionic_amd64.deb -o /tmp/virtualbox.deb
     dpkg -i /tmp/virtualbox.deb
     rm /tmp/virtualbox.deb
 }
 
 INSTALL_NODEJS() {
     printf "${YELLOW}Installing NPM...${NC}\n"
-    curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+    curl  --no-progress-meter  -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
     apt install nodejs
 }
 
 INSTALL_YARN() {
     printf "${YELLOW}Installing Yarn...${NC}\n"
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    curl  --no-progress-meter -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
     apt update &&  apt install yarn
 }
 
 INSTALL_RUST() {
     printf "${YELLOW}Installing Rust...${NC}\n"
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+    curl  --no-progress-meter --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 }
 
 INSTALL_NINJA() {
     printf "${YELLOW}Installing Ninja...${NC}\n"
-    curl -fsSL https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-linux.zip -o /tmp/ninja.zip
+    curl  --no-progress-meter -fsSL https://github.com/ninja-build/ninja/releases/download/v1.10.2/ninja-linux.zip -o /tmp/ninja.zip
     unzip /tmp/ninja.zip -d /usr/local/bin/
     rm /tmp/ninja.zip
 }
@@ -149,7 +149,7 @@ INSTALL_MESONBUILD() {
 
 INSTALL_BOOSTLIB() {
     printf "${YELLOW}Installing Boost...${NC}\n"
-    wget https://dl.bintray.com/boostorg/release/1.79.0/source/boost_1_79_0.tar.gz
+    wget -q https://dl.bintray.com/boostorg/release/1.79.0/source/boost_1_79_0.tar.gz
     tar -xzf boost_1_79_0.tar.gz
     cd boost_1_79_0
     ./bootstrap.sh --prefix=/usr/local
@@ -166,15 +166,15 @@ INSTALL_VENV() {
 
 INSTALL_ANACONDA() {
     printf "${YELLOW}Installing Anaconda...${NC}\n"
-    wget https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
+    wget -q https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
     bash Anaconda3-2021.11-Linux-x86_64.sh -b
     rm Anaconda3-2021.11-Linux-x86_64.sh
 }
 
 INSTALL_ADOPTOPENJDK(){
     printf "${YELLOW}Installing OpenJDK...${NC}\n"
-    apt-get install -y wget apt-transport-https gnupg
-    wget https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public
+    apt-get install -y wget -q apt-transport-https gnupg
+    wget -q https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public
     gpg --no-default-keyring --keyring ./adoptopenjdk-keyring.gpg --import artifactory.gpg.public
     gpg --no-default-keyring --keyring ./adoptopenjdk-keyring.gpg --export --output adoptopenjdk-archive-keyring.gpg 
     mkdir -p /usr/share/keyrings
