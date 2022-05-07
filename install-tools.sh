@@ -111,8 +111,23 @@ INSTALL_DOCKER_ENGINE() {
 }
 
 INSTALL_VIRTUALBOX() {
-    printf "${YELLOW}Installing VirtualBox...${NC}\n"
+    printf "${YELLOW}Installing VirtualBox Dependencies...${NC}\n"
+    # required dependencies for VirtualBox
+    apt-get install acpica-tools chrpath doxygen g++-multilib libasound2-dev libcap-dev \
+        libcurl4-openssl-dev libdevmapper-dev libidl-dev libopus-dev libpam0g-dev \
+        libpulse-dev libqt5opengl5-dev libqt5x11extras5-dev qttools5-dev libsdl1.2-dev libsdl-ttf2.0-dev \
+        libssl-dev libvpx-dev libxcursor-dev libxinerama-dev libxml2-dev libxml2-utils \
+        libxmu-dev libxrandr-dev make nasm python3-dev python-dev qttools5-dev-tools \
+        texlive texlive-fonts-extra texlive-latex-extra unzip xsltproc \
+        \
+        default-jdk libstdc++5 libxslt1-dev linux-kernel-headers makeself \
+        mesa-common-dev subversion yasm zlib1g-dev -y
+
+    # additional dependencies
+    apt-get install ia32-libs libc6-dev-i386 lib32gcc1 lib32stdc++6 -y
+    printf "${YELLOW}Downloading VirtualBox DEB file...${NC}\n"
     curl  --no-progress-meter  -fsSL https://download.virtualbox.org/virtualbox/6.1.34/virtualbox-6.1_6.1.34-150636.1~Ubuntu~bionic_amd64.deb -o /tmp/virtualbox.deb
+    printf "${YELLOW}Installing VirtualBox ...${NC}\n"
     dpkg -i /tmp/virtualbox.deb
     rm /tmp/virtualbox.deb
 }
