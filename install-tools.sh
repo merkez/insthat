@@ -7,7 +7,7 @@ PROGRAMS_ARR=(goland pycharm intellij rubymine sublime
  vagrant go docker
  virtualbox nodejs yarn ninja 
  rust boostlib venv anaconda 
- adoptopenjdk ffmpeg) 
+ adoptopenjdk ffmpeg telegram-desktop)) 
 
 declare -A PROGRAMS=(
     [goland]="INSTALL_GOLAND"
@@ -196,9 +196,27 @@ INSTALL_TELEGRAM() {
 }
 
 
+INSTALL_ESSENTIALS() {
+     for i in "${ESSENTIALS[@]}" ; do
+        printf "\n${BLUE}Installing  $i ${NC}\n"
+        printf "${BLUE}********************************************************${NC}\n"
+        apt install -y $i
+    done
+}
+
+## INSTALL_PROGRAMS FOR TEST PURPOSES
+INSTALL_PROGRAMS() {
+    for i in "${PROGRAMS[@]}" ; do
+        printf "\n${BLUE}Installing  $i ${NC}\n"
+        printf "${BLUE}********************************************************${NC}\n"
+        ${PROGRAMS[$i]}
+    done
+}
+
+
+
 if [[ $EUID -ne 0 ]]; then  
    	printf "${RED}This script must be run as root\n" 
-   	exit 1
 else
     printf "${GREEN}********************************************************${NC}\n"
     printf "${GREEN}*  INSTALLING ESSENTIAL PACKAGES & OPTIONAL PROGRAMS   *${NC}\n"
@@ -211,11 +229,7 @@ else
     printf "${BLUE}Would like to continue ? [y/n] ${NC}\n"
     read -r response
     if [  "$response" != "${response#[Yy]}" ]; then
-        for i in "${ESSENTIALS[@]}" ; do
-            printf "\n${BLUE}Installing  $i ${NC}\n"
-            printf "${BLUE}********************************************************${NC}\n"
-            apt install -y $i
-        done
+        INSTALL_ESSENTIALS
     else 
         printf "${RED}Exiting without installing essentials \n"
         printf "${RED}--------------------------------------------------------${NC}\n"
@@ -241,6 +255,13 @@ else
             printf "${YELLOW}https://github.com/merkez/install-tools/issues/new\n${NC}\n"
             break
         fi
+    #  this is for test purposes on CI
+    if [[ $1 == "-t" || $1 == "--testall" ]]; then
+        printf "${YELLOW}Usage:${NC}\n"
+        INSTALL_ESSENTIALS
+        INSTALL_PROGRAMS
+        exit 0
+    fi             
     done
 
    printf "${YELLOW}--------------------------------------------------------${NC}\n\n"
