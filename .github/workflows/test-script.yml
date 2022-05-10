@@ -1,0 +1,21 @@
+
+name: Test installation script 
+
+on:
+  push:
+    paths:
+      - 'install-tools.sh'
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Test all functions 
+        run: |
+          sudo chmod +x ./install-tools.sh
+          sudo bash install-tools.sh -t
