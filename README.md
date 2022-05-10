@@ -18,7 +18,7 @@ This repository contains some list of essential tools and additional programs to
 |        tree       |         anaconda        |           ninja          |                         |
 |        htop       |                         |       adaptopenjdk       |                         |
 |       ffmpeg      |                         |         telegram         |                         |
-
+|                   |                         |          qemu            |                         |
 
 ## how to run 
 

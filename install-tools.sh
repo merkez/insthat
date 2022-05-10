@@ -7,7 +7,7 @@ PROGRAMS_ARR=(goland pycharm intellij rubymine sublime
  vagrant go docker
  virtualbox nodejs yarn ninja 
  rust boostlib venv anaconda 
- adoptopenjdk ffmpeg telegram-desktop)
+ adoptopenjdk ffmpeg telegram-desktop qemu)
 
 declare -A PROGRAMS=(
     [goland]="INSTALL_GOLAND"
@@ -29,6 +29,7 @@ declare -A PROGRAMS=(
     [adoptopenjdk]="INSTALL_ADOPTOPENJDK"
     [ffmpeg]="INSTALL_FFMPEG"
     [telegram]="INSTALL_TELEGRAM"
+    [qemu]="INSTALL_QEMU"
 )
 
 JETBRAINS_VERSION="2022.1"
@@ -95,6 +96,25 @@ INSTALL_VAGRANT() {
     curl  --no-progress-meter -fsSL https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -o /tmp/vagrant.deb
     dpkg -i /tmp/vagrant.deb
     rm /tmp/vagrant.deb
+}
+
+INSTALL_QEMU() {
+    printf "${YELLOW}Installing QEMU...${NC}\n"
+    printf "${YELLOW} While installing QEMU, some other packages will be installed as well...${NC}\n"
+    printf "${YELLOW} Packages are qemu-kvm  virt-manager virt-viewer libvirt-bin ${NC}\n"
+    printf "${YELLOW} Please wait...${NC}\n"
+
+    apt install qemu-kvm qemu virt-manager virt-viewer libvirt-bin -y
+
+    
+    # Installation from git source code, in case required
+    # git clone https://gitlab.com/qemu-project/qemu.git /temp/qemu
+    # cd /temp/qemu
+    # git submodule init
+    # git submodule update --recursive
+    # ./configure
+    # make
+    # rm -rf /temp/qemu
 }
 
 INSTALL_DOCKER_ENGINE() {
