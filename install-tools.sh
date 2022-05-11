@@ -57,18 +57,78 @@ INSTALL_GO() {
 
 INSTALL_PYCHARM() {
     printf "${YELLOW}Installing PyCharm\n"
-    wget -q https://download.jetbrains.com/python/pycharm-community-${JETBRAINS_VERSION}.tar.gz
-    tar -xzf pycharm-community-${JETBRAINS_VERSION}.tar.gz
-    rm pycharm-community-${JETBRAINS_VERSION}.tar.gz
-    mv pycharm-community-${JETBRAINS_VERSION} /opt/pycharm
+    {
+        curl  --no-progress-meter -fsSL https://download.jetbrains.com/python/pycharm-community-${JETBRAINS_VERSION}.tar.gz -o /tmp/pycharm.tar.gz
+    } || {
+        printf "${YELLOW} curl is not installed, installing curl\n${NC}"
+        apt install -y curl
+        curl --no-progress-meter -fsSL https://download.jetbrains.com/python/pycharm-community-${JETBRAINS_VERSION}.tar.gz -o /tmp/pycharm.tar.gz
+    }
+
+    tar -C /opt -xzf /tmp/pycharm.tar.gz
+    rm /tmp/pycharm.tar.gz
+    ln -s /opt/pycharm-community-${JETBRAINS_VERSION} /opt/pycharm
+    echo "[Desktop Entry]
+            Name=PyCharm
+            Comment=PyCharm Community Edition
+            Exec=/opt/pycharm/bin/pycharm.sh
+            Icon=/opt/pycharm/bin/pycharm.png
+            Terminal=false
+            Type=Application
+            Categories=Development;IDE;
+            " > /usr/share/applications/pycharm.desktop
+
+    chmod +x /usr/share/applications/pycharm.desktop
+   {
+       printf "${YELLOW}Installing WebStorm desktop shortcut...${NC}\n"
+       desktop-file-install /usr/share/applications/pycharm.desktop
+   } || {
+        printf "${YELLOW}desktop-file-install command cannot be found, continuing...${NC}\n"
+   }
+   printf "${YELLOW} Cleaning up...${NC}\n"
+   rm -rf /tmp/pycharm.tar.gz
+   printf "${GREEN}PyCharm installed successfully!${NC}\n"
 }
 
 INSTALL_RUBYMINE() {
     printf "${YELLOW}Installing RubyMine\n"
-    wget -q https://download.jetbrains.com/ruby/RubyMine-${JETBRAINS_VERSION}.tar.gz
-    tar -xzf RubyMine-${JETBRAINS_VERSION}.tar.gz
-    rm RubyMine-${JETBRAINS_VERSION}.tar.gz
-    mv RubyMine-${JETBRAINS_VERSION} /opt/rubymine
+
+     
+    {
+        curl  --no-progress-meter -fsSL https://download.jetbrains.com/ruby/RubyMine-${JETBRAINS_VERSION}.tar.gz -o /tmp/rubymine.tar.gz
+    } || {
+        printf "${YELLOW} curl is not installed, installing curl\n${NC}"
+        apt install -y curl
+        curl --no-progress-meter -fsSL https://download.jetbrains.com/ruby/RubyMine-${JETBRAINS_VERSION}.tar.gz -o /tmp/rubymine.tar.gz
+    }
+
+    tar -C /opt -xzf /tmp/rubymine.tar.gz
+    ln -s /opt/RubyMine-${JETBRAINS_VERSION} /opt/rubymine
+    rm /tmp/rubymine.tar.gz
+    echo "[Desktop Entry]
+            Name=RubyMine
+            Comment=RubyMine Community Edition
+            Exec=/opt/rubymine/bin/rubymine.sh
+            Icon=/opt/rubymine/bin/rubymine.png
+            Terminal=false
+            Type=Application
+            Categories=Development;IDE;
+            " > /usr/share/applications/rubymine.desktop
+
+    chmod +x /usr/share/applications/rubymine.desktop
+    {
+        printf "${YELLOW}Installing WebStorm desktop shortcut...${NC}\n"
+        desktop-file-install /usr/share/applications/rubymine.desktop
+       
+    } ||
+    {
+        printf "${YELLOW}desktop-file-install command cannot be found, continuing...${NC}\n"
+    }
+    printf "${YELLOW} Cleaning up...${NC}\n"
+    rm -rf /tmp/rubymine.tar.gz
+    printf "${GREEN}RubyMine installed successfully!${NC}\n"
+
+   
 }
 
 INSTALL_SUBLIME() {
@@ -303,8 +363,14 @@ INSTALL_WEBSTORM() {
     chmod +x /usr/share/applications/webstorm.desktop
     printf "${YELLOW}Installing WebStorm icon...${NC}\n"
     cp /opt/webstorm/bin/webstorm.png /usr/share/icons/hicolor/256x256/apps/
-    printf "${YELLOW}Installing WebStorm desktop shortcut...${NC}\n"
-    desktop-file-install /usr/share/applications/webstorm.desktop
+    {
+        printf "${YELLOW}Installing WebStorm desktop shortcut...${NC}\n"
+        desktop-file-install /usr/share/applications/webstorm.desktop
+
+    } || {
+        printf "${YELLOW}desktop-file-install command cannot be found, continuing...${NC}\n"
+    }
+   
     printf "${YELLOW}Cleaning up...${NC}\n"
     rm -rf WebStorm-${JETBRAINS_VERSION}.tar.gz
  
