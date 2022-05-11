@@ -16,9 +16,10 @@ This repository contains some list of essential tools and additional programs to
 |        wget       |         sublime         |            npm           |                         |
 |        zsh        |         vs-code         |           venv           |                         |
 |        tree       |         anaconda        |           ninja          |                         |
-|        htop       |                         |       adaptopenjdk       |                         |
+|        htop       |         webstorm        |       adaptopenjdk       |                         |
 |       ffmpeg      |                         |         telegram         |                         |
 |                   |                         |          qemu            |                         |
+|                   |                         |         mongodb          |                         |
 
 ## how to run 
 

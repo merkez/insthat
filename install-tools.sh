@@ -3,11 +3,13 @@
 ## This script can be extended in time to include more tools to install if required
 
 ESSENTIALS=(git vim zsh curl  --no-progress-meter wget -q tree htop build-essential cmake) 
-PROGRAMS_ARR=(goland pycharm intellij rubymine sublime 
- vagrant go docker
+PROGRAMS_ARR=(
+ goland pycharm intellij rubymine 
+ sublime vagrant go docker mongodb
  virtualbox nodejs yarn ninja 
  rust boostlib venv anaconda 
- adoptopenjdk ffmpeg telegram-desktop qemu)
+ adoptopenjdk ffmpeg webstorm
+ telegram-desktop qemu)
 
 declare -A PROGRAMS=(
     [goland]="INSTALL_GOLAND"
@@ -30,6 +32,8 @@ declare -A PROGRAMS=(
     [ffmpeg]="INSTALL_FFMPEG"
     [telegram]="INSTALL_TELEGRAM"
     [qemu]="INSTALL_QEMU"
+    [mongodb]="INSTALL_MONGODB"
+    [webstorm]="INSTALL_WEBSTORM"
 )
 
 JETBRAINS_VERSION="2022.1"
@@ -230,6 +234,81 @@ INSTALL_TELEGRAM() {
     apt-get install -y telegram-desktop
 }
 
+
+INSTALL_MONGODB() {
+    printf "${YELLOW}Adding MongoDB public keys...${NC}\n"
+
+    {
+         wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc |  apt-key add -
+
+    } || {
+         wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc |  apt-key add -
+
+    }
+   
+    touch /etc/apt/sources.list.d/mongodb-org-5.0.list
+    echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/5.0 multiverse" |  tee /etc/apt/sources.list.d/mongodb-org-5.0.list
+    apt update
+    printf "${YELLOW}Installing MongoDB...${NC}\n"
+    apt install -y mongodb-org
+
+    {
+        printf "${YELLOW}Starting MongoDB...${NC}\n"
+        systemctl start mongod
+
+    } || {
+        printf "${YELLOW}Reloading system daemon...${NC}\n"
+        systemctl daemon-reload
+    } 
+    
+    systemctl enable mongod
+
+    {
+        printf "${YELLOW}Checking MongoDB version...${NC}\n"
+        mongod --version
+    } || {
+        printf "${YELLOW}There is an issue while checking version of mongodb...${NC}\n"
+        printf "${YELLOW}Please check manually...${NC}\n"
+        exit 1
+    }
+
+}
+
+INSTALL_WEBSTORM() {
+    printf "${YELLOW}Installing WebStorm...${NC}\n"
+    {
+      wget -q https://download-cdn.jetbrains.com/webstorm/WebStorm-${JETBRAINS_VERSION}.tar.gz
+    } || {
+        printf "${YELLOW}wget tool cannot be found, installing it to continue with process ${NC}\n"
+        apt install wget -y
+        printf "${YELLOW}Downloading WebStorm...${NC}\n"
+        wget -q https://download-cdn.jetbrains.com/webstorm/WebStorm-${JETBRAINS_VERSION}.tar.gz
+    }
+    
+    tar -xzf WebStorm-${JETBRAINS_VERSION}.tar.gz
+    printf "${YELLOW}Extracting  WebStorm to /opt/webstorm ${NC}\n"
+    mv WebStorm-${JETBRAINS_VERSION} /opt/webstorm
+    printf "${YELLOW}Creating WebStorm launcher...${NC}\n"
+    echo "[Desktop Entry]
+            Name=WebStorm
+            Comment=WebStorm IDE
+            Exec=/opt/webstorm/bin/webstorm.sh
+            Icon=/opt/webstorm/bin/webstorm.png
+            Terminal=false
+            Type=Application
+            Categories=Development;IDE;
+            " > /usr/share/applications/webstorm.desktop
+
+    printf "${YELLOW}Installing WebStorm launcher...${NC}\n"
+    chmod +x /usr/share/applications/webstorm.desktop
+    printf "${YELLOW}Installing WebStorm icon...${NC}\n"
+    cp /opt/webstorm/bin/webstorm.png /usr/share/icons/hicolor/256x256/apps/
+    printf "${YELLOW}Installing WebStorm desktop shortcut...${NC}\n"
+    desktop-file-install /usr/share/applications/webstorm.desktop
+    printf "${YELLOW}Cleaning up...${NC}\n"
+    rm -rf WebStorm-${JETBRAINS_VERSION}.tar.gz
+ 
+}
 
 INSTALL_ESSENTIALS() {
      for i in "${ESSENTIALS[@]}" ; do
