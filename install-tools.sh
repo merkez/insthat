@@ -165,16 +165,22 @@ INSTALL_VAGRANT() {
 INSTALL_QEMU() {
     printf "${YELLOW}Installing QEMU...${NC}\n"
     printf "${YELLOW} While installing QEMU, some other packages will be installed as well...${NC}\n"
-    printf "${YELLOW} Packages are qemu-kvm  virt-manager virt-viewer libvirt-bin ${NC}\n"
     printf "${YELLOW} Please wait...${NC}\n"
-    # Installation from git source code, in case required
-    git clone https://gitlab.com/qemu-project/qemu.git /temp/qemu
-    cd /temp/qemu
-    git submodule init
-    git submodule update --recursive
-    ./configure
-    make
-    rm -rf /temp/qemu
+    {
+        apt install qemu qemu-kvm qemu-utils -y
+    }||
+    {
+        printf "${YELLOW}qemu cannot be installed through apt try to install from source by uncommenting uninstallation steps below${NC}\n"
+        # Installation from git source code, in case required
+        # git clone https://gitlab.com/qemu-project/qemu.git /temp/qemu
+        # cd /temp/qemu
+        # git submodule init
+        # git submodule update --recursive
+        # ./configure
+        # make
+        # rm -rf /temp/qemu
+    }
+
 }
 
 INSTALL_DOCKER_ENGINE() {
