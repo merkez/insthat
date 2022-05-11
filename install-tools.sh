@@ -167,18 +167,14 @@ INSTALL_QEMU() {
     printf "${YELLOW} While installing QEMU, some other packages will be installed as well...${NC}\n"
     printf "${YELLOW} Packages are qemu-kvm  virt-manager virt-viewer libvirt-bin ${NC}\n"
     printf "${YELLOW} Please wait...${NC}\n"
-
-    apt install qemu-kvm qemu virt-manager virt-viewer libvirt-bin -y
-
-    
     # Installation from git source code, in case required
-    # git clone https://gitlab.com/qemu-project/qemu.git /temp/qemu
-    # cd /temp/qemu
-    # git submodule init
-    # git submodule update --recursive
-    # ./configure
-    # make
-    # rm -rf /temp/qemu
+    git clone https://gitlab.com/qemu-project/qemu.git /temp/qemu
+    cd /temp/qemu
+    git submodule init
+    git submodule update --recursive
+    ./configure
+    make
+    rm -rf /temp/qemu
 }
 
 INSTALL_DOCKER_ENGINE() {
