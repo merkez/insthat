@@ -18,4 +18,4 @@ jobs:
       - name: Test all functions 
         run: |
           sudo chmod +x ./install-tools.sh
-          sudo bash install-tools.sh -t
+          sudo bash install-tools.sh --random

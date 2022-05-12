@@ -542,13 +542,28 @@ INSTALL_PROGRAMS() {
     done
 }
 
+TEST_RANDOMLY() {
+    printf "\n${BLUE}Testing installation process randomly...${NC}\n"
+    printf "${BLUE}********************************************************${NC}\n"
+    len=${#PROGRAMS[@]}
+    for i in {0..7} ; do
+        index=$(( $RANDOM % $len + 1 ))
+        ${PROGRAMS[$index]}
+    done
+    printf "\n${BLUE}********************************************************${NC}\n"
+    printf "\n${BLUE}Testing process finished...${NC}\n"
+}
+
   #  this is for test purposes on CI
 if [[ $1 == "-t" || $1 == "--testall" ]]; then
     printf "${YELLOW}TEST MODE: TESTING INSTALLATION FUNCTIONS${NC}\n"
     INSTALL_ESSENTIALS
     INSTALL_PROGRAMS
     exit 0
-else               
+elif [[ $1 == "-r" || $1 == "--random" ]]; then
+    TEST_RANDOMLY
+    exit 0
+else # this is for normal installation              
     if [[ $EUID -ne 0 ]]; then  
         printf "${RED}This script must be run as root\n" 
     else
