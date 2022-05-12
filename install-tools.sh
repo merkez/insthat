@@ -548,7 +548,9 @@ TEST_RANDOMLY() {
     len=${#PROGRAMS[@]}
     for i in {0..7} ; do
         index=$(( $RANDOM % $len + 1 ))
-        ${PROGRAMS[$index]}
+        prg=${PROGRAMS_ARR[$index]}
+        printf "\n${BLUE}Installing  $prg ${NC}\n"
+        ${PROGRAMS[$prg]}
     done
     printf "\n${BLUE}********************************************************${NC}\n"
     printf "\n${BLUE}Testing process finished...${NC}\n"
@@ -561,7 +563,7 @@ if [[ $1 == "-t" || $1 == "--testall" ]]; then
     INSTALL_PROGRAMS
     exit 0
 elif [[ $1 == "-r" || $1 == "--random" ]]; then
-    INSTALL_ESSENTIALS
+    # INSTALL_ESSENTIALS
     TEST_RANDOMLY
     exit 0
 else # this is for normal installation              
