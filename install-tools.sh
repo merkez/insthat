@@ -2,7 +2,7 @@
 
 ## This script can be extended in time to include more tools to install if required
 
-ESSENTIALS=(git vim zsh curl  --no-progress-meter wget -q tree htop build-essential cmake) 
+ESSENTIALS=(git vim zsh curl wget  tree htop build-essential cmake) 
 PROGRAMS_ARR=(
  goland pycharm intellij rubymine 
  sublime vagrant go docker mongodb
@@ -39,6 +39,8 @@ declare -A PROGRAMS=(
 JETBRAINS_VERSION="2022.1"
 VAGRANT_VERSION="2.2.19"
 GO_VERSION="1.18"
+SUBLIME_VERSION="build-3126"
+
 
 BLUE="\033[0;34m"
 RED="\033[0;31m"
@@ -99,6 +101,7 @@ INSTALL_RUBYMINE() {
     } || {
         printf "${YELLOW} curl is not installed, installing curl\n${NC}"
         apt install -y curl
+        printf "${YELLOW} downloading rubymine...${NC}\n"
         curl --no-progress-meter -fsSL https://download.jetbrains.com/ruby/RubyMine-${JETBRAINS_VERSION}.tar.gz -o /tmp/rubymine.tar.gz
     }
 
@@ -131,35 +134,135 @@ INSTALL_RUBYMINE() {
    
 }
 
-INSTALL_SUBLIME() {
-    printf "${YELLOW}Installing Sublime Text\n"
-    wget -q https://download.sublimetext.com/sublime-text_build-3126_amd64.deb
-    sudo dpkg -i sublime-text_build-3126_amd64.deb
-    rm sublime-text_build-3126_amd64.deb
-}
-
 
 INSTALL_INTELLIJ() {
     printf "${YELLOW}Installing IntelliJ\n"
-    wget -q https://download.jetbrains.com/idea/ideaIU-${JETBRAINS_VERSION}.tar.gz
-    tar -xzf ideaIU-${JETBRAINS_VERSION}.tar.gz
-    rm ideaIU-${JETBRAINS_VERSION}.tar.gz
-    mv idea-IU-${JETBRAINS_VERSION} /opt/intellij
-}
 
+    {
+        curl  --no-progress-meter -fsSL https://download.jetbrains.com/idea/ideaIC-${JETBRAINS_VERSION}.tar.gz -o /tmp/intellij.tar.gz
+    } || {
+        printf "${YELLOW} curl is not installed, installing curl\n${NC}"
+        apt install -y curl
+        printf "${YELLOW} Downloading intellij idea...${NC}\n"
+        curl --no-progress-meter -fsSL https://download.jetbrains.com/idea/ideaIC-${JETBRAINS_VERSION}.tar.gz -o /tmp/intellij.tar.gz
+    }
+
+    tar -C /opt -xzf /tmp/intellij.tar.gz
+    ln -s /opt/ideaIC-${JETBRAINS_VERSION} /opt/intellij
+    echo "[Desktop Entry]
+            Name=IntelliJ
+            Comment=IntelliJ Community Edition
+            Exec=/opt/intellij/bin/idea.sh
+            Icon=/opt/intellij/bin/idea.png
+            Terminal=false
+            Type=Application
+            Categories=Development;IDE;
+            " > /usr/share/applications/intellij.desktop
+
+    chmod +x /usr/share/applications/intellij.desktop
+    {
+        printf "${YELLOW}Installing WebStorm desktop shortcut...${NC}\n"
+        desktop-file-install /usr/share/applications/intellij.desktop
+    } ||
+    {
+        printf "${YELLOW}desktop-file-install command cannot be found, continuing...${NC}\n"
+    }
+    printf "${YELLOW} Cleaning up...${NC}\n"
+    rm -rf /tmp/intellij.tar.gz
+    printf "${GREEN}IntelliJ installed successfully!${NC}\n"
+}
 
 INSTALL_GOLAND() {
     printf "${YELLOW}Installing Goland...${NC}\n"
-    curl  --no-progress-meter -fsSL https://download.jetbrains.com/go/goland-${JETBRAINS_VERSION}.tar.gz -o /tmp/goland.tar.gz
+    
+    {
+        curl  --no-progress-meter -fsSL https://download.jetbrains.com/go/goland-${JETBRAINS_VERSION}.tar.gz -o /tmp/goland.tar.gz
+    } || {
+        printf "${YELLOW} curl is not installed, installing curl\n${NC}"
+        apt install -y curl
+        printf "${YELLOW} Downloading goland...${NC}\n"
+        curl --no-progress-meter -fsSL https://download.jetbrains.com/go/goland-${JETBRAINS_VERSION}.tar.gz -o /tmp/goland.tar.gz
+    }
+
     tar -C /opt -xzf /tmp/goland.tar.gz
-    rm /tmp/goland.tar.gz
+    ln -s /opt/goland-${JETBRAINS_VERSION} /opt/goland
+
+    echo "[Desktop Entry]
+            Name=Goland
+            Comment=Goland Community Edition
+            Exec=/opt/goland/bin/goland.sh
+            Icon=/opt/goland/bin/goland.png
+            Terminal=false
+            Type=Application
+            Categories=Development;IDE;
+            " > /usr/share/applications/goland.desktop
+
+    chmod +x /usr/share/applications/goland.desktop
+    {
+        printf "${YELLOW}Installing WebStorm desktop shortcut...${NC}\n"
+        desktop-file-install /usr/share/applications/goland.desktop
+    } ||
+    {
+        printf "${YELLOW}desktop-file-install command cannot be found, continuing...${NC}\n"
+    }
+    printf "${YELLOW} Cleaning up...${NC}\n"
+    rm -rf /tmp/goland.tar.gz
+    printf "${GREEN}Goland installed successfully!${NC}\n"
 }
+
+
+
+
+INSTALL_SUBLIME() {
+    {
+        printf "${YELLOW} Downloading sublime text...${NC}\n"
+        curl  --no-progress-meter -fsSL https://download.sublimetext.com/sublime_text_${SUBLIME_VERSION}_amd64.deb -o /tmp/sublime.deb
+    }|| {
+        printf "${YELLOW} curl is not installed, installing curl\n${NC}"
+        apt install -y curl
+       
+        curl --no-progress-meter -fsSL https://download.sublimetext.com/sublime_text_${SUBLIME_VERSION}_amd64.deb -o /tmp/sublime.deb
+    }
+
+    {
+        printf "${YELLOW} Installing sublime text...${NC}\n"
+        dpkg -i /tmp/sublime.deb
+        printf "${GREEN}Sublime installed successfully!${NC}\n"
+    }||{
+        printf "${YELLOW} sublime could not be installed, manual check might require\n${NC}"
+        exit 1
+    }
+    printf "${YELLOW} Cleaning up...${NC}\n"
+    rm /tmp/sublime.deb
+}
+
+
+
+
+
 
 INSTALL_VAGRANT() {
     printf "${YELLOW}Installing Vagrant...${NC}\n"
-    curl  --no-progress-meter -fsSL https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -o /tmp/vagrant.deb
-    dpkg -i /tmp/vagrant.deb
-    rm /tmp/vagrant.deb
+    {
+        printf "${YELLOW} Downloading Vagrant...${NC}\n"
+        curl  --no-progress-meter -fsSL https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -o /tmp/vagrant.deb
+
+    }|| {
+        printf "${YELLOW} curl is not installed, installing curl\n${NC}"
+        apt install -y curl
+        printf "${YELLOW} Downloading Vagrant...${NC}\n"
+        curl --no-progress-meter -fsSL https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb -o /tmp/vagrant.deb
+    }
+
+    {
+        printf "${YELLOW} Installing Vagrant...${NC}\n"
+        dpkg -i /tmp/vagrant.deb
+        printf "${GREEN}Vagrant installed successfully!${NC}\n"
+    }|| {
+        printf "${YELLOW} Vagrant could not be installed, manual check might require\n${NC}"
+        exit 1
+    }
+
 }
 
 INSTALL_QEMU() {
@@ -250,13 +353,27 @@ INSTALL_MESONBUILD() {
 
 INSTALL_BOOSTLIB() {
     printf "${YELLOW}Installing Boost...${NC}\n"
-    wget -q https://dl.bintray.com/boostorg/release/1.79.0/source/boost_1_79_0.tar.gz
-    tar -xzf boost_1_79_0.tar.gz
-    cd boost_1_79_0
-    ./bootstrap.sh --prefix=/usr/local
+
+    {   
+        printf "${YELLOW}Downloading Boost 1.79...${NC}\n"
+        curl  --no-progress-meter -fsSL https://dl.bintray.com/boostorg/release/1.79.0/source/boost_1_79_0.tar.gz -o /tmp/boost.tar.gz
+    } || {
+        printf "${YELLOW}curl cannot be found installing curl .${NC}\n"
+        apt install curl -y
+        curl  --no-progress-meter -fsSL https://dl.bintray.com/boostorg/release/1.73.0/source/boost_1_73_0.tar.gz -o /tmp/boost.tar.gz
+    }
+
+    printf "${YELLOW}Extracting Boost...${NC}\n"
+    tar -xzf /tmp/boost.tar.gz -C /usr/local/
+    
+    cd /usr/local/boost_1_79_0/
+    printf "${YELLOW}Building Boost...${NC}\n"
+    ./bootstrap.sh --prefix=/usr/local/boost
+    printf "${YELLOW}Installing Boost...${NC}\n"
     ./b2 install
-    cd ..
-    rm boost_1_79_0.tar.gz
+    printf "${YELLOW}Cleaning up ...${NC}\n"
+    rm /tmp/boost.tar.gz
+    printf "${GREEN}Boost installed successfully!${NC}\n"
 }
 
 INSTALL_VENV() {
@@ -266,16 +383,42 @@ INSTALL_VENV() {
 }
 
 INSTALL_ANACONDA() {
-    printf "${YELLOW}Installing Anaconda...${NC}\n"
-    wget -q https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh
-    bash Anaconda3-2021.11-Linux-x86_64.sh -b
-    rm Anaconda3-2021.11-Linux-x86_64.sh
+
+    {
+        printf "${YELLOW}Downloading Anaconda script...${NC}\n"
+        curl  --no-progress-meter -fsSL https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh -o /tmp/anaconda.sh
+       
+
+    } || {
+        printf "${YELLOW}curl cannot be found installing curl .${NC}\n"
+        apt install curl -y
+        curl  --no-progress-meter -fsSL https://repo.anaconda.com/archive/Anaconda3-2021.11-Linux-x86_64.sh -o /tmp/anaconda.sh
+    }
+    
+    {    
+ 
+        printf "${YELLOW}Installing Anaconda...${NC}\n"
+        bash /tmp/anaconda.sh -b -p /usr/local/anaconda3
+        printf "${GREEN}Anaconda installed successfully!${NC}\n"
+    } || {
+        printf "${RED}There is an error with installing anaconda .${NC}\n"
+        printf "${RED}Check manually...${NC}\n"
+        exit 1
+    }
+   
 }
 
 INSTALL_ADOPTOPENJDK(){
     printf "${YELLOW}Installing OpenJDK...${NC}\n"
-    apt-get install -y wget -q apt-transport-https gnupg
-    wget -q https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public
+    apt  install -y -q apt-transport-https gnupg
+    {
+        curl  --no-progress-meter -fsSL https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public 
+    } || {
+        printf "${YELLOW}curl cannot be found installing curl .${NC}\n"
+        apt install curl -y
+        curl  --no-progress-meter -fsSL https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public
+    }
+   
     gpg --no-default-keyring --keyring ./adoptopenjdk-keyring.gpg --import artifactory.gpg.public
     gpg --no-default-keyring --keyring ./adoptopenjdk-keyring.gpg --export --output adoptopenjdk-archive-keyring.gpg 
     mkdir -p /usr/share/keyrings
@@ -283,29 +426,32 @@ INSTALL_ADOPTOPENJDK(){
     rm adoptopenjdk-keyring.gpg
     echo "deb [signed-by=/usr/share/keyrings/adoptopenjdk-archive-keyring.gpg] https://adoptopenjdk.jfrog.io/adoptopenjdk/deb bionic main" |  tee /etc/apt/sources.list.d/adoptopenjdk.list
     apt update
-    apt-get install adoptopenjdk-11-hotspot -y
+    apt install adoptopenjdk-11-hotspot -y
 }
 
 INSTALL_FFMPEG() {
     printf "${YELLOW}Installing FFMPEG...${NC}\n"
-    apt-get install -y ffmpeg
+    apt install -y ffmpeg
 }
 
 INSTALL_TELEGRAM() {
     printf "${YELLOW}Installing Telegram...${NC}\n"
-    apt-get install -y telegram-desktop
+    apt install -y telegram-desktop
 }
 
 
 INSTALL_MONGODB() {
-    printf "${YELLOW}Adding MongoDB public keys...${NC}\n"
+    
 
-    {
-         wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc |  apt-key add -
+    {   
+        printf "${YELLOW}Adding MongoDB public keys...${NC}\n"
+        curl  --no-progress-meter -fsSL  https://www.mongodb.org/static/pgp/server-5.0.asc |  apt-key add -
 
     } || {
-         wget -qO - https://www.mongodb.org/static/pgp/server-5.0.asc |  apt-key add -
 
+        printf "${YELLOW}curl cannot be found installing curl .${NC}\n"
+        apt install curl -y
+        curl  --no-progress-meter -fsSL  https://www.mongodb.org/static/pgp/server-5.0.asc |  apt-key add -
     }
    
     touch /etc/apt/sources.list.d/mongodb-org-5.0.list
@@ -339,17 +485,18 @@ INSTALL_MONGODB() {
 INSTALL_WEBSTORM() {
     printf "${YELLOW}Installing WebStorm...${NC}\n"
     {
-      wget -q https://download-cdn.jetbrains.com/webstorm/WebStorm-${JETBRAINS_VERSION}.tar.gz
+      curl  --no-progress-meter -fsSL https://download-cdn.jetbrains.com/webstorm/WebStorm-${JETBRAINS_VERSION}.tar.gz -o /tmp/webstorm.tar.gz
     } || {
-        printf "${YELLOW}wget tool cannot be found, installing it to continue with process ${NC}\n"
-        apt install wget -y
+        printf "${YELLOW}curl tool cannot be found, installing it to continue with process ${NC}\n"
+        apt install curl -y
         printf "${YELLOW}Downloading WebStorm...${NC}\n"
-        wget -q https://download-cdn.jetbrains.com/webstorm/WebStorm-${JETBRAINS_VERSION}.tar.gz
+        curl  --no-progress-meter -fsSL https://download-cdn.jetbrains.com/webstorm/WebStorm-${JETBRAINS_VERSION}.tar.gz -o /tmp/webstorm.tar.gz
     }
     
-    tar -xzf WebStorm-${JETBRAINS_VERSION}.tar.gz
-    printf "${YELLOW}Extracting  WebStorm to /opt/webstorm ${NC}\n"
-    mv WebStorm-${JETBRAINS_VERSION} /opt/webstorm
+    printf "${YELLOW}Extracting  WebStorm to /opt/ ${NC}\n"
+    tar -xzf /tmp/webstorm.tar.gz -C /opt
+    printf "${YELLOW}Creating symbolic link...${NC}\n"
+    ln -s /opt/WebStorm-${JETBRAINS_VERSION} /opt/WebStorm
     printf "${YELLOW}Creating WebStorm launcher...${NC}\n"
     echo "[Desktop Entry]
             Name=WebStorm
