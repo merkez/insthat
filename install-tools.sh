@@ -216,12 +216,12 @@ INSTALL_GOLAND() {
 INSTALL_SUBLIME() {
     {
         printf "${YELLOW} Downloading sublime text...${NC}\n"
-        curl  --no-progress-meter -fsSL https://download.sublimetext.com/sublime_text_${SUBLIME_VERSION}_amd64.deb -o /tmp/sublime.deb
+        curl  --no-progress-meter -fsSL https://download.sublimetext.com/sublime-text_${SUBLIME_VERSION}_amd64.deb -o /tmp/sublime.deb
     }|| {
         printf "${YELLOW} curl is not installed, installing curl\n${NC}"
         apt install -y curl
        
-        curl --no-progress-meter -fsSL https://download.sublimetext.com/sublime_text_${SUBLIME_VERSION}_amd64.deb -o /tmp/sublime.deb
+        curl --no-progress-meter -fsSL https://download.sublimetext.com/sublime-text_${SUBLIME_VERSION}_amd64.deb -o /tmp/sublime.deb
     }
 
     {
