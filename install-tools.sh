@@ -561,6 +561,7 @@ if [[ $1 == "-t" || $1 == "--testall" ]]; then
     INSTALL_PROGRAMS
     exit 0
 elif [[ $1 == "-r" || $1 == "--random" ]]; then
+    INSTALL_ESSENTIALS
     TEST_RANDOMLY
     exit 0
 else # this is for normal installation              
