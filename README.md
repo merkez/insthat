@@ -2,6 +2,9 @@
 
 This repository contains some list of essential tools and additional programs to be installed on Debian based computer.
 
+[![Test installation script](https://github.com/merkez/insthat/actions/workflows/test-script.yml/badge.svg)](https://github.com/merkez/insthat/actions/workflows/test-script.yml)
+
+
 > **ALTHOUGH IT IS TESTED ON UBUNTU 20, USE IT AT YOUR RISK, CHECK THE SCRIPT BEFORE USING TO UPDATE VERSIONS AND OTHER STUFF THAT YOU MAY WANT TO UPDATE**
 
 
