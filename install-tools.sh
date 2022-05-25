@@ -2,14 +2,14 @@
 
 ## This script can be extended in time to include more tools to install if required
 
-ESSENTIALS=(git vim zsh curl wget  tree htop build-essential cmake) 
+ESSENTIALS=(git vim zsh curl wget  tree htop build-essential cmake net-tools) 
 PROGRAMS_ARR=(
  goland pycharm intellij rubymine 
  sublime vagrant go docker mongodb
  virtualbox nodejs yarn ninja 
  rust boostlib venv anaconda 
  adoptopenjdk ffmpeg webstorm
- telegram-desktop qemu)
+ telegram qemu)
 
 declare -A PROGRAMS=(
     [goland]="INSTALL_GOLAND"
@@ -589,7 +589,7 @@ else # this is for normal installation
         fi
 
         while true; do
-            printf "${BLUE}Type what you would like to install ${NC}\n\n"
+            printf "\n${BLUE}Type what you would like to install ${NC}\n\n"
             printf "[ ${BLUE}${PROGRAMS_ARR[*]}${NC} ]\n\n"
             read -r response
             if [  "${PROGRAMS[$response]}" != "" ]; then
