@@ -10,7 +10,7 @@ PROGRAMS_ARR=(
  rust boostlib venv anaconda 
  adoptopenjdk ffmpeg webstorm
  qemu kafka gdb jdk)
- telegram qemu)
+ telegram qemu pip)
 
 declare -A PROGRAMS=(
     [goland]="INSTALL_GOLAND"
@@ -38,6 +38,7 @@ declare -A PROGRAMS=(
     [kafka]="INSTALL_KAFKA"
     [jdk]="INSTALL_JDK"
     [gdb]="INSTALL_GDB"
+    [pip]="INSTALL_PIP"
 )
 
 JETBRAINS_VERSION="2022.1"
@@ -558,6 +559,22 @@ INSTALL_KAFKA (){
     printf "${YELLOW}Creating symbolic link...${NC}\n"
     ln -s /opt/kafka_2.13-3.2.0 /opt/kafka
     printf "${GREEN}Kafka is installeed to /opt/kafka ${NC}\n"
+}
+
+INSTALL_PIP() {
+    printf "${YELLOW}Installing pip...${NC}\n"
+    { 
+        printf "${YELLOW}Installing pip through apt ...${NC}\n"
+        apt install -y python3-pip
+    } || {
+        printf "${YELLOW}Installing pip through get-pip.py ...${NC}\n"
+        curl  --no-progress-meter -fsSL https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+        {
+            python /tmp/get-pip.py
+        } || {
+            python3 /tmp/get-pip.py
+        }
+    }
 }
 
 INSTALL_ESSENTIALS() {
