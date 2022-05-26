@@ -22,6 +22,7 @@ This repository contains some list of essential tools and additional programs to
 |        htop       |         webstorm        |       adaptopenjdk       |                         |
 |       ffmpeg      |                         |         telegram         |                         |
 |        gdb        |                         |          qemu            |                         |
+|      net-tools    |                         |          qemu            |                         |
 |                   |                         |         mongodb          |                         |
 |                   |                         |          kafka           |                         |    
 
