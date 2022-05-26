@@ -9,7 +9,7 @@ PROGRAMS_ARR=(
  virtualbox nodejs yarn ninja 
  rust boostlib venv anaconda 
  adoptopenjdk ffmpeg webstorm
- telegram-desktop qemu)
+ telegram-desktop qemu kafka gdb jdk)
 
 declare -A PROGRAMS=(
     [goland]="INSTALL_GOLAND"
@@ -34,6 +34,9 @@ declare -A PROGRAMS=(
     [qemu]="INSTALL_QEMU"
     [mongodb]="INSTALL_MONGODB"
     [webstorm]="INSTALL_WEBSTORM"
+    [kafka]="INSTALL_KAFKA"
+    [jdk]="INSTALL_JDK"
+    [gdb]="INSTALL_GDB"
 )
 
 JETBRAINS_VERSION="2022.1"
@@ -523,6 +526,37 @@ INSTALL_WEBSTORM() {
     printf "${YELLOW}Cleaning up...${NC}\n"
     rm -rf WebStorm-${JETBRAINS_VERSION}.tar.gz
  
+}
+
+INSTALL_GDB() {
+    printf "${YELLOW}Installing GDB...${NC}\n"
+    apt install -y gdb
+    printf "${GREEN} GDB installed successfully ${NC}\n"
+}
+
+INSTALL_JDK (){
+    printf "${YELLOW}Installing JDK...${NC}\n"
+
+    apt install -y openjdk-11-jdk
+}
+
+INSTALL_KAFKA (){
+    # installation of kafka requires jdk to be installed
+
+    printf "${YELLOW}Installing Kafka...${NC}\n"
+    {
+        curl  --no-progress-meter -fsSL https://dlcdn.apache.org/kafka/3.2.0/kafka_2.13-3.2.0.tgz -o /tmp/kafka.tgz
+    } || {
+        printf "${YELLOW}curl tool cannot be found, installing it to continue with process ${NC}\n"
+        apt install curl -y
+        printf "${YELLOW}Downloading Kafka...${NC}\n"
+        curl  --no-progress-meter -fsSL https://dlcdn.apache.org/kafka/3.2.0/kafka_2.13-3.2.0.tgz -o /tmp/kafka.tgz
+    }
+    printf "${YELLOW}Extracting Kafka to /opt/ ${NC}\n"
+    tar -xzf /tmp/kafka.tgz -C /opt
+    printf "${YELLOW}Creating symbolic link...${NC}\n"
+    ln -s /opt/kafka_2.13-3.2.0 /opt/kafka
+    printf "${GREEN}Kafka is installeed to /opt/kafka ${NC}\n"
 }
 
 INSTALL_ESSENTIALS() {
