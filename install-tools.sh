@@ -9,7 +9,7 @@ PROGRAMS_ARR=(
  virtualbox nodejs yarn ninja 
  rust boostlib venv anaconda 
  adoptopenjdk ffmpeg webstorm
- qemu kafka gdb jdk)
+ qemu kafka gdb jdk
  telegram qemu pip)
 
 declare -A PROGRAMS=(
