@@ -10,7 +10,7 @@ PROGRAMS_ARR=(
  rust boostlib venv anaconda 
  adoptopenjdk ffmpeg webstorm
  qemu kafka gdb jdk
- telegram qemu pip)
+ telegram qemu pip zoom)
 
 declare -A PROGRAMS=(
     [goland]="INSTALL_GOLAND"
@@ -39,6 +39,7 @@ declare -A PROGRAMS=(
     [jdk]="INSTALL_JDK"
     [gdb]="INSTALL_GDB"
     [pip]="INSTALL_PIP"
+    [zoom]= "INSTALL_ZOOM"
 )
 
 JETBRAINS_VERSION="2022.1"
@@ -575,6 +576,13 @@ INSTALL_PIP() {
             python3 /tmp/get-pip.py
         }
     }
+}
+
+INSTALL_ZOOM (){
+    printf "${YELLOW}Installing Zoom...${NC}\n"
+    curl  --no-progress-meter -fsSL https://zoom.us/client/latest/zoom_amd64.deb -o /tmp/zoom.deb
+    dpkg -i /tmp/zoom.deb
+    printf "${GREEN}Zoom is installed  ${NC}\n"
 }
 
 INSTALL_ESSENTIALS() {

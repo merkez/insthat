@@ -10,7 +10,7 @@ This repository contains some list of essential tools and additional programs to
 
 ## what is included 
 
-| **_Linux#Tools_** | **_IDEs/Code Editors_** | **_Some Utilities_**     | **_Programming Langs_** |
+| **_Linux#Tools_** | **_IDEs/Code Editors_** | **_Other Applications_** | **_Programming Langs_** |
 |:-----------------:|:-----------------------:|:------------------------:|:-----------------------:|
 |  build-essential  |          goland         |          docker          |            go           |
 |       cmake       |         pycharm         |        virtualbox        |          nodejs         |
@@ -18,13 +18,14 @@ This repository contains some list of essential tools and additional programs to
 |        curl       |         rubymine        |           yarn           |                         |
 |        wget       |         sublime         |            npm           |                         |
 |        zsh        |         vs-code         |           venv           |                         |
-|        tree       |         anaconda        |           ninja          |                         |
+|        tree       |         anaconda        |          ninja           |                         |
 |        htop       |         webstorm        |       adaptopenjdk       |                         |
 |       ffmpeg      |                         |         telegram         |                         |
 |        gdb        |                         |          qemu            |                         |
 |      net-tools    |                         |         mongodb          |                         |
 |                   |                         |          kafka           |                         |
 |                   |                         |           pip            |                         |
+|                   |                         |          zoom            |                         |
 
 ## how to run 
 
