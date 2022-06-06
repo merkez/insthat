@@ -9,7 +9,7 @@ PROGRAMS_ARR=(
  virtualbox nodejs yarn ninja 
  rust boostlib venv anaconda 
  adoptopenjdk ffmpeg webstorm
- telegram qemu)
+ telegram qemu clang)
 
 declare -A PROGRAMS=(
     [goland]="INSTALL_GOLAND"
@@ -34,6 +34,7 @@ declare -A PROGRAMS=(
     [qemu]="INSTALL_QEMU"
     [mongodb]="INSTALL_MONGODB"
     [webstorm]="INSTALL_WEBSTORM"
+    [clang] = "INSTALL_CLANG"
 )
 
 JETBRAINS_VERSION="2022.1"
@@ -523,6 +524,11 @@ INSTALL_WEBSTORM() {
     printf "${YELLOW}Cleaning up...${NC}\n"
     rm -rf WebStorm-${JETBRAINS_VERSION}.tar.gz
  
+}
+
+INSTALL_CLANG() {
+      printf "\n${BLUE}Installing  clang... ${NC}\n"
+      apt install clang -y
 }
 
 INSTALL_ESSENTIALS() {
