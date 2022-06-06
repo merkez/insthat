@@ -18,11 +18,14 @@ This repository contains some list of essential tools and additional programs to
 |        curl       |         rubymine        |           yarn           |                         |
 |        wget       |         sublime         |            npm           |                         |
 |        zsh        |         vs-code         |           venv           |                         |
-|        tree       |         anaconda        |           ninja          |                         |
+|        tree       |         anaconda        |          ninja           |                         |
 |        htop       |         webstorm        |       adaptopenjdk       |                         |
 |       ffmpeg      |                         |         telegram         |                         |
-|      net-tools    |                         |          qemu            |                         |
-|                   |                         |         mongodb          |                         |
+|        gdb        |                         |          qemu            |                         |
+|      net-tools    |                         |         mongodb          |                         |
+|      clang        |                         |          kafka           |                         |
+|                   |                         |           pip            |                         |
+|                   |                         |          zoom            |                         |
 
 ## how to run 
 

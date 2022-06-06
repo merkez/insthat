@@ -9,7 +9,8 @@ PROGRAMS_ARR=(
  virtualbox nodejs yarn ninja 
  rust boostlib venv anaconda 
  adoptopenjdk ffmpeg webstorm
- telegram qemu clang)
+ qemu kafka gdb jdk
+ telegram qemu pip zoom clang)
 
 declare -A PROGRAMS=(
     [goland]="INSTALL_GOLAND"
@@ -35,6 +36,11 @@ declare -A PROGRAMS=(
     [mongodb]="INSTALL_MONGODB"
     [webstorm]="INSTALL_WEBSTORM"
     [clang] = "INSTALL_CLANG"
+    [kafka]="INSTALL_KAFKA"
+    [jdk]="INSTALL_JDK"
+    [gdb]="INSTALL_GDB"
+    [pip]="INSTALL_PIP"
+    [zoom]= "INSTALL_ZOOM"
 )
 
 JETBRAINS_VERSION="2022.1"
@@ -529,6 +535,61 @@ INSTALL_WEBSTORM() {
 INSTALL_CLANG() {
       printf "\n${BLUE}Installing  clang... ${NC}\n"
       apt install clang -y
+}
+
+INSTALL_GDB() {
+    printf "${YELLOW}Installing GDB...${NC}\n"
+    apt install -y gdb
+    printf "${GREEN} GDB installed successfully ${NC}\n"
+}
+
+INSTALL_JDK (){
+    printf "${YELLOW}Installing JDK...${NC}\n"
+
+    apt install -y openjdk-11-jdk
+}
+
+INSTALL_KAFKA (){
+    # installation of kafka requires jdk to be installed
+
+    printf "${YELLOW}Installing Kafka...${NC}\n"
+    {
+        curl  --no-progress-meter -fsSL https://dlcdn.apache.org/kafka/3.2.0/kafka_2.13-3.2.0.tgz -o /tmp/kafka.tgz
+    } || {
+        printf "${YELLOW}curl tool cannot be found, installing it to continue with process ${NC}\n"
+        apt install curl -y
+        printf "${YELLOW}Downloading Kafka...${NC}\n"
+        curl  --no-progress-meter -fsSL https://dlcdn.apache.org/kafka/3.2.0/kafka_2.13-3.2.0.tgz -o /tmp/kafka.tgz
+    }
+    printf "${YELLOW}Extracting Kafka to /opt/ ${NC}\n"
+    tar -xzf /tmp/kafka.tgz -C /opt
+    printf "${YELLOW}Creating symbolic link...${NC}\n"
+    ln -s /opt/kafka_2.13-3.2.0 /opt/kafka
+    printf "${GREEN}Kafka is installeed to /opt/kafka ${NC}\n"
+}
+
+INSTALL_PIP() {
+    printf "${YELLOW}Installing pip...${NC}\n"
+    { 
+        printf "${YELLOW}Installing pip through apt ...${NC}\n"
+        apt install -y python3-pip
+    } || {
+        printf "${YELLOW}Installing pip through get-pip.py ...${NC}\n"
+        curl  --no-progress-meter -fsSL https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
+        {
+            python /tmp/get-pip.py
+        } || {
+            python3 /tmp/get-pip.py
+        }
+    }
+}
+
+INSTALL_ZOOM (){
+    printf "${YELLOW}Installing Zoom...${NC}\n"
+    curl  --no-progress-meter -fsSL https://zoom.us/client/latest/zoom_amd64.deb -o /tmp/zoom.deb
+    dpkg -i /tmp/zoom.deb
+    printf "${GREEN}Zoom is installed  ${NC}\n"
+
 }
 
 INSTALL_ESSENTIALS() {
