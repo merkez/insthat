@@ -10,22 +10,23 @@ This repository contains some list of essential tools and additional programs to
 
 ## what is included 
 
-| **_Linux#Tools_** | **_IDEs/Code Editors_** | **_Other Applications_** | **_Programming Langs_** |
-|:-----------------:|:-----------------------:|:------------------------:|:-----------------------:|
-|  build-essential  |          goland         |          docker          |            go           |
-|       cmake       |         pycharm         |        virtualbox        |          nodejs         |
-|        vim        |         intellij        |          vagrant         |           rust          |
-|        curl       |         rubymine        |           yarn           |                         |
-|        wget       |         sublime         |            npm           |                         |
-|        zsh        |         vs-code         |           venv           |                         |
-|        tree       |         anaconda        |          ninja           |                         |
-|        htop       |         webstorm        |       adaptopenjdk       |                         |
-|       ffmpeg      |                         |         telegram         |                         |
-|        gdb        |                         |          qemu            |                         |
-|      net-tools    |                         |         mongodb          |                         |
-|      clang        |                         |          kafka           |                         |
-|                   |                         |           pip            |                         |
-|                   |                         |          zoom            |                         |
+
+| **_Programming Langs_** | **_IDEs/Code Editors_** | **_Linux#Tools_** | **_Other Applications_** |
+|:-----------------------:|:-----------------------:|:-----------------:|:------------------------:|
+|            go           |          goland         |  build-essential  |          docker          |
+|           rust          |         pycharm         |       cmake       |        virtualbox        |
+|          nodejs         |         intellij        |        vim        |          vagrant         |
+|                         |         rubymine        |        curl       |           yarn           |
+|                         |         sublime         |        wget       |            npm           |
+|                         |         vs-code         |        zsh        |           venv           |
+|                         |         anaconda        |        tree       |           ninja          |
+|                         |         webstorm        |        htop       |       adaptopenjdk       |
+|                         |                         |       ffmpeg      |         telegram         |
+|                         |                         |         7z        |           qemu           |
+|                         |                         |                   |          mongodb         |
+|                         |                         |                   |           kafka          |
+|                         |                         |                   |            pip           |
+|                         |                         |                   |           zoom           |
 
 ## how to run 
 
