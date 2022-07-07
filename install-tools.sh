@@ -9,8 +9,8 @@ PROGRAMS_ARR=(
  virtualbox nodejs yarn ninja 
  rust boostlib venv anaconda 
  adoptopenjdk ffmpeg webstorm
- qemu kafka gdb jdk
- telegram qemu pip zoom clang)
+ qemu kafka gdb jdk 
+ telegram qemu pip zoom clang 7z)
 
 declare -A PROGRAMS=(
     [goland]="INSTALL_GOLAND"
@@ -35,11 +35,12 @@ declare -A PROGRAMS=(
     [qemu]="INSTALL_QEMU"
     [mongodb]="INSTALL_MONGODB"
     [webstorm]="INSTALL_WEBSTORM"
-    [clang] = "INSTALL_CLANG"
+    [clang]="INSTALL_CLANG"
     [kafka]="INSTALL_KAFKA"
     [jdk]="INSTALL_JDK"
     [gdb]="INSTALL_GDB"
     [pip]="INSTALL_PIP"
+    [7z]="INSTALL_7Z"
     [zoom]= "INSTALL_ZOOM"
 )
 
@@ -583,6 +584,14 @@ INSTALL_PIP() {
         }
     }
 }
+
+
+INSTALL_7Z() {
+      printf "${YELLOW}Installing 7z...${NC}\n"
+      apt-get install p7zip-full -y  || printf "${RED}7z installation failed...${NC}\n" && exit
+}
+
+
 
 INSTALL_ZOOM (){
     printf "${YELLOW}Installing Zoom...${NC}\n"
