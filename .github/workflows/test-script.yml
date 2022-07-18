@@ -5,6 +5,9 @@ on:
   push:
     paths:
       - 'install-tools.sh'
+  schedule:
+    # 15:05 UTC > 17:05 CEST 
+   - cron: '5 15 * * *'
 
   workflow_dispatch:
 
