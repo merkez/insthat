@@ -10,6 +10,9 @@ on:
    - cron: '5 15 * * *'
 
   workflow_dispatch:
+  
+  repository_dispatch:
+    types: on-demand-run
 
 jobs:
   build:
